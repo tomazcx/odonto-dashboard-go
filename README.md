@@ -29,7 +29,7 @@ docker run -p ${APP_PORT}:${APP_PORT} -v .:/usr/local/app --name odonto-dashboar
 Finally, initiate the bundle to enable autoreload for Tailwind CSS:
 
 ```bash
-npm run  watch
+npm run watch
 ```
 
 ## How to run it in production mode
