@@ -1,0 +1,10 @@
+FROM golang:1.21.2
+
+WORKDIR /usr/local/app
+COPY . .
+
+RUN go install github.com/cosmtrek/air@latest
+RUN go mod tidy
+
+ENTRYPOINT [ "air" ]
+CMD [ "-c", ".air.toml" ]
