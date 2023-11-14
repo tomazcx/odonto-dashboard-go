@@ -1,16 +1,20 @@
 # Odonto Dashboard
 
-A dashboard for a dentist clinic. Here you can manage your patients and its appointments informations.
+The Odonto Dashboard is a comprehensive solution designed for dental clinics, enabling efficient management of patient information and appointment details.
 
-To start using it, clone the repository:
+## Getting Started
 
+To begin using the Odonto Dashboard, follow these steps:
+
+1. **Clone the repository:**
+   
 ```bash
 git clone https://github.com/tomazcx/odonto-dashboard-go.git
 ```
 
-## How to run it in developer mode
+## Running in Developer Mode
 
-After cloning the repository, build the image with the designed Dockerfile for development environment:
+After cloning the repository, build the Docker image using the dedicated Dockerfile for the development environment:
 
 ```bash
 docker build -t odonto-dashboard-dev -f Dockerfile.development .
@@ -22,7 +26,7 @@ Run the container:
 docker run -p ${APP_PORT}:${APP_PORT} -v .:/usr/local/app --name odonto-dashboard odonto-dashboard-dev
 ```
 
-Finally, run the bundle to work with autoreload for tailwindcss:
+Finally, initiate the bundle to enable autoreload for Tailwind CSS:
 
 ```bash
 npm run  watch
@@ -30,7 +34,7 @@ npm run  watch
 
 ## How to run it in production mode
 
-After cloning the project locally, build the image with the designed Dockerfile for production environment:
+Once the project is cloned locally, build the Docker image using the specified Dockerfile for the production environment:
 
 ```bash
 docker build -t odonto-dashboard -f Dockerfile .
@@ -41,3 +45,5 @@ Run the container:
 ```bash
 docker run -p ${APP_PORT}:${APP_PORT} -v .:/usr/local/app --name odonto-dashboard odonto-dashboard
 ```
+
+This will set up the Odonto Dashboard in production mode, ready for efficient and secure use in a dental clinic setting.
