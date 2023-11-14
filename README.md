@@ -1,6 +1,6 @@
 # Odonto Dashboard
 
-A dashboard for a dentist clinic. Here you can manage your patients its appointments informations.
+A dashboard for a dentist clinic. Here you can manage your patients and its appointments informations.
 
 To start using it, clone the repository:
 
