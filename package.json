@@ -5,7 +5,7 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "start": "webpack --watch",
+    "watch": "webpack --watch",
     "build": "webpack build"
   },
   "keywords": [],
