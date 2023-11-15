@@ -4,6 +4,7 @@ WORKDIR /usr/local/app
 COPY . .
 
 RUN go install github.com/cosmtrek/air@latest
+RUN go install github.com/a-h/templ/cmd/templ@latest
 RUN go mod tidy
 
 ENTRYPOINT [ "air" ]
