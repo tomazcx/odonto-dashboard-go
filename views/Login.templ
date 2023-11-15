@@ -1,24 +1,18 @@
 package views
 
 import "github.com/tomazcx/odonto-dashboard-go/components"
+import "github.com/tomazcx/odonto-dashboard-go/views/shared"
 
 templ Login() {
-	<!DOCTYPE html>
-	<html lang="en">
-		<head>
-			<meta charset="UTF-8"/>
-			<meta name="viewport" content="width=device-width, initial-scale=0.0"/>
-			<title>Login page</title>
-		</head>
-		<body class="bg-sky-200">
+	@shared.Base("Login") {
+		<main class="bg-sky-200 min-h-screen">
 			<form class="bg-white rounded-lg shadow-lg p-8 flex flex-col gap-4 w-11/12 max-w-[400px] top-1/2 left-1/2 absolute -translate-x-1/2 -translate-y-1/2">
-                <h1 class="text-xl font-semibold text-center uppercase ">Login</h1>
-                <p class="text-center text-slate-800">Faça o login para acessar o sistema</p>
-                @components.Input(components.InputProps{Type: "text", Name: "login", Label: "Login"})
-                @components.Input(components.InputProps{Type: "password", Name: "Password", Label: "Password"})
-                @components.Button(components.ButtonProps{Type: "button", Variant: "primary", Label: "Submit"})
+				<h1 class="text-xl font-semibold text-center uppercase ">Login</h1>
+				<p class="text-center text-slate-800">Faça o login para acessar o sistema</p>
+				@components.Input(components.InputProps{Type: "text", Name: "login", Label: "Login"})
+				@components.Input(components.InputProps{Type: "password", Name: "Password", Label: "Password"})
+				@components.Button(components.ButtonProps{Type: "button", Variant: "primary", Label: "Submit"})
 			</form>
-			<script src="/dist/bundle.js"></script>
-		</body>
-	</html>
+		</main>
+	}
 }
