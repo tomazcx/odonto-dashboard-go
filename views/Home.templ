@@ -1,0 +1,22 @@
+package views
+
+import (
+	"github.com/tomazcx/odonto-dashboard-go/components"
+	"github.com/tomazcx/odonto-dashboard-go/views/layouts"
+)
+
+templ Home() {
+	@layouts.DashboardLayout() {
+		<div class="h-full flex justify-center items-center flex-col gap-4">
+			<h1 class="text-2xl font-medium">Bem vindo ao seu Odonto Dashboard, Doutor Fabio!</h1>
+			<p>
+				Aqui, você pode realizar o cadastro dos dados de seus pacientes
+				e acompanhar suas consultas. Tenha um bom dia de trabalho!
+			</p>
+			<div class="gap-6 flex">
+				@components.Button(components.ButtonProps{Type: "", Variant: "primary", Label: "Cadastrar", Href: "/newPatient"}, "")
+				@components.Button(components.ButtonProps{Type: "", Variant: "primary", Label: "Cadastrados", Href: "/patients"}, "")
+			</div>
+		</div>
+	}
+}

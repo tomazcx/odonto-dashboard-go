@@ -1,0 +1,61 @@
+package components
+
+templ ClientsTable() {
+	<section>
+	<div class="px-4 py-2 border border-slate-200 rounded-t-lg">
+		<span>3 Resultado </span>
+	</div>
+	<table class="w-full">
+		<tr class="text-left bg-slate-200">
+			<th class="font-normal px-4 py-2">Nome</th>
+			<th class="font-normal px-4 py-2">Idade</th>
+			<th class="font-normal px-4 py-2">Cidade</th>
+			<th class="font-normal px-4 py-2">Número de celular</th>
+			<th class="font-normal px-4 py-2">Consultas realizadas</th>
+			<th class="font-normal px-4 py-2"></th>
+		</tr>
+		<tr>
+			<td class="px-4 py-2 border-x border-slate-200"><a href="/client?id=1" class={"text-sky-400 transition-colors", templ.SafeClass("hover:text-sky-500")}>John Doe</a></td>
+			<td class="px-4 py-2 border-x border-slate-200">55</td>
+			<td class="px-4 py-2 border-x border-slate-200">Curitiba</td>
+		<td class="px-4 py-2 border-x border-slate-200">55555555</td>
+			<td class="px-4 py-2 border-x border-slate-200">5</td>
+			<th class="font-normal px-4 py-2"><img class="cursor-pointer" src="/public/assets/trash-simple.svg" height="24px" width="24px"/></th>
+		</tr>
+		<tr>
+			<td class="px-4 py-2 border-x border-slate-200"><a href="/client?id=1" class={"text-sky-400 transition-colors", templ.SafeClass("hover:text-sky-500")}>John Doe</a></td>
+			<td class="px-4 py-2 border-x border-slate-200">55</td>
+			<td class="px-4 py-2 border-x border-slate-200">Curitiba</td>
+			<td class="px-4 py-2 border-x border-slate-200">55555555</td>
+			<td class="px-4 py-2 border-x border-slate-200">5</td>
+			<th class="font-normal px-4 py-2"><img class="cursor-pointer" src="/public/assets/trash-simple.svg" height="24px" width="24px"/></th>
+		</tr>
+		<tr>
+			<td class="px-4 py-2 border-x border-slate-200"><a href="/client?id=1" class={"text-sky-400 transition-colors", templ.SafeClass("hover:text-sky-500")}>John Doe</a></td>
+			<td class="px-4 py-2 border-x border-slate-200">55</td>
+			<td class="px-4 py-2 border-x border-slate-200">Curitiba</td>
+			<td class="px-4 py-2 border-x border-slate-200">55555555</td>
+			<td class="px-4 py-2 border-x border-slate-200">5</td>
+			<th class="font-normal px-4 py-2"><img class="cursor-pointer" src="/public/assets/trash-simple.svg" height="24px" width="24px"/></th>
+		</tr>
+	</table>
+	<div class="border border-slate0-200 rounded-b-lg flex justify-end px-4 py-2 gap-1.5">
+		<div class={ "w-8 h-8 flex items-center justify-center cursor-pointer border border-slate-200 rounded-lg", templ.SafeClass("hover:bg-slate-200") }>
+			&lt;
+		</div>
+		<div class={ "w-8 h-8 flex items-center justify-center cursor-pointer border border-sky-200 rounded-lg bg-sky-200", templ.SafeClass("hover:bg-slate-200") }>
+			1
+		</div>
+		<div class={ "w-8 h-8 flex items-center justify-center cursor-pointer border border-slate-200 rounded-lg", templ.SafeClass("hover:bg-slate-200") }>
+			2
+		</div>
+		<div class={ "w-8 h-8 flex items-center justify-center cursor-pointer border border-slate-200 rounded-lg", templ.SafeClass("hover:bg-slate-200") }>
+			3
+		</div>
+		<div class={ "w-8 h-8 flex items-center justify-center cursor-pointer border border-slate-200 rounded-lg", templ.SafeClass("hover:bg-slate-200") }>
+			&gt;
+		</div>
+	</div>
+
+	</section>
+}

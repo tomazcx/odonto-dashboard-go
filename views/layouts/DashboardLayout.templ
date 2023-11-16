@@ -2,20 +2,30 @@ package layouts
 
 import "github.com/tomazcx/odonto-dashboard-go/views/shared"
 
-templ DashboardLayout(){
-	@shared.Base("Odonto Dashboard"){
-		<div class="grid grid-cols-12">
-			<aside class="col-span-1 bg-sky-200 min-h-screen">
-
+templ DashboardLayout() {
+	@shared.Base("Odonto Dashboard") {
+		<div class="flex">
+			<aside class="w-20 bg-slate-100 min-h-screen">
+				<a href="/" class="bg-slate-200 h-12 flex items-center justify-center">
+					<img src="/public/assets/teeth.svg" width="24px" height="24px"/>
+				</a>
+				<a href="/patients" class={ "cursor-pointer py-4 flex flex-col gap-2 text-xs text-center transition-colors flex items-center justify-center", templ.SafeClass("hover:bg-slate-200") }>
+					<img src="/public/assets/users.svg" width="24px" height="24px"/>
+					<span>Pacientes</span>
+				</a>
+				<a href="/newPatient" class={ "cursor-pointer py-4 flex flex-col gap-2 text-xs text-center transition-colors flex items-center justify-center", templ.SafeClass("hover:bg-slate-200") }>
+					<img src="/public/assets/form.svg" width="24px" height="24px"/>
+					<span>Cadastrar Paciente</span>
+				</a>
 			</aside>
-			<main class="col-span-11">
-	<header class="shadow-lg p-8">
-
-		</header>
-
-				<h1>teste</h1>
+			<main class="w-full">
+				<header class="border-b border-slate-200 py-2 px-8 h-12 justify-end flex">
+					<img src="/public/assets/user-circle.svg"/>
+				</header>
+				<div class="p-12">
+					{ children... }
+				</div>
 			</main>
 		</div>
 	}
-
 }

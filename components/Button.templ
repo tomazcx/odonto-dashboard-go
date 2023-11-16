@@ -1,20 +1,40 @@
 package components
 
 type ButtonProps struct {
-	Label 	string
-    Type  	string
-	Variant	string
+	Label   string
+	Type    string
+	Variant string
+	Href    string
 }
 
-templ Button(props ButtonProps){
-	<button 
-		type={props.Type} 
-		class={
-			"rounded-lg w-full px-8 py-2 text-white font-semibold transition-opacity ",
+templ Button(props ButtonProps, className string) {
+	if len(props.Href) > 0 {
+		<a
+ 			href={ templ.URL(props.Href) }
+ 			class={ 
+			"rounded-lg px-8 py-2 text-white font-medium text-center transition-opacity ",
 			templ.KV("bg-sky-400", props.Variant == "primary"),
 			templ.KV("bg-rose-400", props.Variant == "danger"),
+			templ.KV("border text-sky-400 border-sky-400", props.Variant == "outline-primary"),
 			templ.SafeClass("hover:opacity-90"),
-		}>
-		{props.Label}
-	</button>
+			className,
+		 }
+		>
+			{ props.Label }
+		</a>
+	} else {
+		<button
+ 			type={ props.Type }
+ 			class={ 
+			"rounded-lg px-8 py-2 text-white font-medium text-center transition-opacity ",
+			templ.KV("bg-sky-400", props.Variant == "primary"),
+			templ.KV("bg-rose-400", props.Variant == "danger"),
+			templ.KV("border text-sky-400 border-sky-400", props.Variant == "outline-primary"),
+			templ.SafeClass("hover:opacity-75"),
+			className,
+		 }
+		>
+			{ props.Label }
+		</button>
+	}
 }

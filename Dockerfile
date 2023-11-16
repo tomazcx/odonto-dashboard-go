@@ -8,7 +8,7 @@ FROM golang:1.21.2 as go_builder
 WORKDIR /usr/local/app
 COPY . .
 RUN go mod tidy
-COPY --from=node_builder /usr/local/node_app/dist/ /usr/local/app/dist
+COPY --from=node_builder /usr/local/node_app/public/dist/ /usr/local/app/public/dist
 RUN go build -o ./temp/main
 ENTRYPOINT [ "./temp/main" ]
 
