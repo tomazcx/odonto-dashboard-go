@@ -10,13 +10,10 @@ type ButtonProps struct {
 templ Button(props ButtonProps, className string) {
 	if len(props.Href) > 0 {
 		<a
- 			href={ templ.URL(props.Href) }
+ 			type={ props.Type }
  			class={ 
-			"rounded-lg px-8 py-2 text-white font-medium text-center transition-opacity ",
-			templ.KV("bg-sky-400", props.Variant == "primary"),
-			templ.KV("bg-rose-400", props.Variant == "danger"),
-			templ.KV("border text-sky-400 border-sky-400", props.Variant == "outline-primary"),
-			templ.SafeClass("hover:opacity-90"),
+			"btn",
+			props.Variant,
 			className,
 		 }
 		>
@@ -26,11 +23,8 @@ templ Button(props ButtonProps, className string) {
 		<button
  			type={ props.Type }
  			class={ 
-			"rounded-lg px-8 py-2 text-white font-medium text-center transition-opacity ",
-			templ.KV("bg-sky-400", props.Variant == "primary"),
-			templ.KV("bg-rose-400", props.Variant == "danger"),
-			templ.KV("border text-sky-400 border-sky-400", props.Variant == "outline-primary"),
-			templ.SafeClass("hover:opacity-75"),
+			"btn",
+			props.Variant,
 			className,
 		 }
 		>

@@ -2,8 +2,10 @@
 export default {
   content: ["**/*.templ"],
   theme: {
-    extend: {},
   },
-  plugins: [],
+  plugins: [require("daisyui")],
+  daisyui: {
+    themes: ["winter"]
+  }
 }
 
