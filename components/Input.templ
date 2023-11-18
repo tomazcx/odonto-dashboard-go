@@ -1,16 +1,37 @@
 package components
 
 type InputProps struct {
-	Type  string
-	Name  string
-	Label string
+	Type         string
+	Name         string
+	Label        string
+	ErrorMessage string
+	Value        string
+	HxRequest    string
+	Required     bool
 }
 
 templ Input(props InputProps) {
-	<div class="form-control w-full">
+	<div
+ 		if len(props.HxRequest) > 0 {
+			hx-post={ props.HxRequest }
+			hx-trigger="change"
+		}
+ 		id={ props.Name+"-field" }
+ 		class="form-control w-full"
+	>
 		<label for={ props.Name } class="label">
 			<span class="label-text">{ props.Label }</span>
 		</label>
-		<input type={ props.Type } name={ props.Name } id={ props.Name } class="input input-bordered w-full"/>
+		<input
+ 			required?={ props.Required }
+ 			value={ props.Value }
+ 			type={ props.Type }
+ 			name={ props.Name }
+ 			id={ props.Name }
+ 			class={ "input input-bordered w-full", templ.KV("input-error", len(props.ErrorMessage) > 0) }
+		/>
+		if len(props.ErrorMessage)>0 {
+			<span class="text-error">{ props.ErrorMessage }</span>
+		}
 	</div>
 }

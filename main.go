@@ -4,17 +4,15 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/a-h/templ"
-	"github.com/tomazcx/odonto-dashboard-go/views"
+	"github.com/tomazcx/odonto-dashboard-go/application/routes"
 )
 
 func main() {
 
 	http.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir("./public"))))
-	http.Handle("/login", templ.Handler(views.Login()))
-	http.Handle("/", templ.Handler(views.Home()))
-	http.Handle("/patients", templ.Handler(views.Clients()))
-	http.Handle("/newPatient", templ.Handler(views.NewClient()))
+
+	routes.AuthRoutes()
+	routes.DashboardRoutes()
 
 	fmt.Println("Server running at port 8000!")
 	http.ListenAndServe(":8000", nil)

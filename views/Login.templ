@@ -6,11 +6,12 @@ import "github.com/tomazcx/odonto-dashboard-go/views/shared"
 templ Login() {
 	@shared.Base("Login") {
 		<main class="bg-primary-content min-h-screen">
-			<form class="bg-white rounded-lg shadow-lg p-8 flex flex-col gap-4 w-11/12 max-w-[400px] top-1/2 left-1/2 absolute -translate-x-1/2 -translate-y-1/2">
+			<form hx-swap="outerHTML" hx-post="/login/submit" class="bg-white rounded-lg shadow-lg p-8 flex flex-col gap-4 w-11/12 max-w-[400px] top-1/2 left-1/2 absolute -translate-x-1/2 -translate-y-1/2">
 				<h1 class="text-xl font-semibold text-center uppercase ">Login</h1>
 				<p class="text-center text-slate-800">Faça o login para acessar o sistema</p>
-				@components.Input(components.InputProps{Type: "text", Name: "login", Label: "Login"})
-				@components.Input(components.InputProps{Type: "password", Name: "Password", Label: "Password"})
+				@components.Input(components.InputProps{Type: "text", Name: "login", Label: "Login", Required:true})
+				@components.Input(components.InputProps{Type: "password", Name: "password", Label: "Password", Required:true})
+				<span id="formError" class="text-error hidden"></span>
 				<button class="btn btn-primary">Entrar</button>
 			</form>
 		</main>
