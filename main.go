@@ -14,6 +14,7 @@ func main() {
 	http.Handle("/login", templ.Handler(views.Login()))
 	http.Handle("/", templ.Handler(views.Home()))
 	http.Handle("/patients", templ.Handler(views.Clients()))
+	http.Handle("/newPatient", templ.Handler(views.NewClient()))
 
 	fmt.Println("Server running at port 8000!")
 	http.ListenAndServe(":8000", nil)

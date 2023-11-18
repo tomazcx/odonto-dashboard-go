@@ -1,7 +1,6 @@
 package views
 
 import (
-	"github.com/tomazcx/odonto-dashboard-go/components"
 	"github.com/tomazcx/odonto-dashboard-go/views/layouts"
 )
 
@@ -14,8 +13,8 @@ templ Home() {
 				e acompanhar suas consultas. Tenha um bom dia de trabalho!
 			</p>
 			<div class="gap-6 flex">
-				@components.Button(components.ButtonProps{Type: "", Variant: "btn-primary", Label: "Cadastrar", Href: "/newPatient"}, "")
-				@components.Button(components.ButtonProps{Type: "", Variant: "btn-primary", Label: "Cadastrados", Href: "/patients"}, "")
+				<button class="btn btn-primary">Cadastrar paciente</button>
+				<button class="btn btn-primary">Pacientes cadastrados</button>
 			</div>
 		</div>
 	}

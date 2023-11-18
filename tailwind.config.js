@@ -1,8 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ["**/*.templ"],
-  theme: {
-  },
+  theme: {},
   plugins: [require("daisyui")],
   daisyui: {
     themes: ["winter"]
