@@ -15,6 +15,7 @@ templ Input(props InputProps) {
  		if len(props.HxRequest) > 0 {
 			hx-post={ props.HxRequest }
 			hx-trigger="change"
+			hx-swap="outerHTML"
 		}
  		id={ props.Name+"-field" }
  		class="form-control w-full"

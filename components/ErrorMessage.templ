@@ -1,5 +1,5 @@
 package components
 
 templ ErrorMessage(label string) {
-	<span id="formError" class="text-error">{ label }</span>
+	<span id="formError" class={"text-error", templ.KV("hidden", len(label) == 0)}>{ label }</span>	
 }

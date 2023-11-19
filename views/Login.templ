@@ -10,7 +10,7 @@ templ Login() {
 				<h1 class="text-xl font-semibold text-center uppercase ">Login</h1>
 				<p class="text-center text-slate-800">Faça o login para acessar o sistema</p>
 				@components.Input(components.InputProps{Type: "text", Name: "login", Label: "Login", Required:true})
-				@components.Input(components.InputProps{Type: "password", Name: "password", Label: "Password", Required:true})
+				@components.Input(components.InputProps{Type: "password", Name: "password", Label: "Senha", Required:true})
 				<span id="formError" class="text-error hidden"></span>
 				<button class="btn btn-primary">Entrar</button>
 			</form>
