@@ -7,6 +7,7 @@ type InputProps struct {
 	ErrorMessage string
 	Value        string
 	HxRequest    string
+	ContainerStyle	 string
 	Required     bool
 }
 
@@ -18,10 +19,14 @@ templ Input(props InputProps) {
 			hx-swap="outerHTML"
 		}
  		id={ props.Name+"-field" }
- 		class="form-control w-full"
+ 		class={"form-control w-full", props.ContainerStyle}
 	>
 		<label for={ props.Name } class="label">
-			<span class="label-text">{ props.Label }</span>
+			<span class="label-text">{ props.Label }
+				if props.Required{
+					<span class="text-error">*</span>			
+				}
+			</span>
 		</label>
 		<input
  			required?={ props.Required }
