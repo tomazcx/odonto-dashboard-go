@@ -7,9 +7,7 @@ tmp_dir = "tmp"
 
 [build]
 # Just plain old shell command. You could use `make` as well.
-cmd = "go build -o ./tmp/main ./main.go"
-# Array of commands to run after ^C
-pre_cmd = ["templ generate"]
+cmd = "templ generate && go build -o ./tmp/main ./main.go"
 # Binary file yields from `cmd`.
 bin = "tmp/main"
 # Customize binary, can setup environment variables when run your app.
@@ -25,7 +23,7 @@ include_file = []
 # Exclude files.
 exclude_file = []
 # Exclude specific regular expressions.
-exclude_regex = ["_test\\.go"]
+exclude_regex = [".*_templ.go"]
 # Exclude unchanged files.
 exclude_unchanged = true
 # Follow symlink for directories
