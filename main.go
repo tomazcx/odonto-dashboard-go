@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/joho/godotenv"
 	"github.com/tomazcx/odonto-dashboard-go/application/routes"
@@ -24,6 +25,12 @@ func main() {
 	routes.AuthRoutes()
 	routes.DashboardRoutes()
 
-	fmt.Println("Server running at port 8000!")
-	http.ListenAndServe(":8000", nil)
+	port := os.Getenv("PORT")
+
+	if len(port) == 0 {
+		port = "8000"
+	}
+
+	fmt.Println("Server running at port " + port + "!")
+	http.ListenAndServe(":"+port, nil)
 }
