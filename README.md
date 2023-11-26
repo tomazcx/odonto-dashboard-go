@@ -20,6 +20,8 @@ Once all the variables are correctly assigned, initiate the development server u
 docker-compose up
 ```
 
+The `docker-compose.yml` file contains all the necessary configuration to set up the web app with a local mysql database, using the credentials and database name defined in the `.env` file.
+
 Finally, in another terminal instance, initiate the bundle to enable autoreload for Tailwind CSS:
 
 ```bash
