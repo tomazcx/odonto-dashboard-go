@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  app:
+    build: 
+      context: .
+      dockerfile: Dockerfile.development
+    ports:
+      - 8000:8000
+    volumes:
+      - .:/usr/local/app
+    depends_on:
+      - db
+  db:
+    image: mysql:latest
+    restart: always
+    ports: 
+      - 3306:3306
+    expose:
+      - 3306
+    volumes:
+      - ./.docker/db/volumes:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_USER}
+      MYSQL_DATABASE: ${DB_NAME}
