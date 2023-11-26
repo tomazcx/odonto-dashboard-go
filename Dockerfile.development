@@ -5,6 +5,7 @@ COPY . .
 
 RUN go install github.com/cosmtrek/air@latest
 RUN go install github.com/a-h/templ/cmd/templ@latest
+RUN go install -tags 'mysql' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
 RUN go mod tidy
 
 ENTRYPOINT [ "air" ]

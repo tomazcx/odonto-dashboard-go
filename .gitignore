@@ -4,3 +4,4 @@ tmp
 **/*_templ.go
 .env
 vendor
+.docker/db/*
