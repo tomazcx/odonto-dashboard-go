@@ -41,3 +41,4 @@ docker run -p ${APP_PORT}:${APP_PORT} -v .:/usr/local/app --name odonto-dashboar
 ```
 
 This will set up the Odonto Dashboard in production mode, ready for efficient and secure use in a dental clinic setting.
+Don't forget to assign the correct values for `.env` variables, specifying the production database credentials, host and name.
