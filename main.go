@@ -9,6 +9,7 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/tomazcx/odonto-dashboard-go/application/routes"
 	"github.com/tomazcx/odonto-dashboard-go/application/utils/authutils"
+	"github.com/tomazcx/odonto-dashboard-go/infra/db"
 )
 
 func main() {
@@ -18,11 +19,15 @@ func main() {
 		log.Fatalf("Error loading .env file: %v", err)
 	}
 
+	db.ConnectToDatabase()
+	db := db.GetConn()
+	defer db.Close()
+
 	authutils.Initialize()
 
 	http.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir("./public"))))
 
-	routes.AuthRoutes()
+	routes.DefineRoutes()
 	routes.DashboardRoutes()
 
 	port := os.Getenv("PORT")

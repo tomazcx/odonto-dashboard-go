@@ -6,7 +6,7 @@ import "github.com/tomazcx/odonto-dashboard-go/components"
 templ NewClient() {
 	@layouts.DashboardLayout() {
 		<h1 class="text-2xl font-medium border-b border-slate-200 pb-4">Cadastrar paciente</h1>
-		<form>
+		<form hx-post="/newPatient/handleCreatePatient" hx-swap="outerHTML">
 			@components.FormFieldset(components.FormFieldsetProps{Title: "Informações pessoais"}){
 					@components.Input(components.InputProps{Type: "text", Label: "Nome", Name: "name", ContainerStyle: "col-span-6", Required:true})
 					@components.Input(components.InputProps{Type: "number", Label: "Idade", Name: "age", ContainerStyle: "col-span-6", Required:true})

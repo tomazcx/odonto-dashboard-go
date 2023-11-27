@@ -10,5 +10,4 @@ import (
 func DashboardRoutes() {
 	http.HandleFunc("/", middlewares.UseAuth(controllers.HomeController{}.Index))
 	http.HandleFunc("/patients", middlewares.UseAuth(controllers.ClientsController{}.Index))
-	http.HandleFunc("/newPatient", middlewares.UseAuth(controllers.NewClientController{}.Index))
 }
