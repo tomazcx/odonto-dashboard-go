@@ -5,13 +5,12 @@ import (
 
 	"github.com/tomazcx/odonto-dashboard-go/data/dto"
 	"github.com/tomazcx/odonto-dashboard-go/data/repositories"
-	"github.com/tomazcx/odonto-dashboard-go/infra/db"
 )
 
 type CreateClientService struct{}
 
 func (c CreateClientService) Execute(data dto.CreateClientDTO) error {
-	clientRepository := repositories.ClientRepository{Db: db.GetConn()}
+	clientRepository := repositories.NewClientRepository()
 	err := clientRepository.Create(data)
 
 	if err != nil {

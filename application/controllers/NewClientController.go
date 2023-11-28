@@ -24,7 +24,6 @@ func (a NewClientController) CreateClient(w http.ResponseWriter, r *http.Request
 	}
 
 	if err := r.ParseForm(); err != nil {
-		w.Header().Set("HX-Retarget", "#formError")
 		components.ErrorMessage("Erro ao processar o formulário. Contate o administrador.").Render(r.Context(), w)
 		return
 	}
@@ -43,9 +42,12 @@ func (a NewClientController) CreateClient(w http.ResponseWriter, r *http.Request
 
 	createClientDto := dto.CreateClientDTO{Name: name, Age: ageInt, Telephone: telephone, City: city, Address: address, District: district, Budget: budget, BudgetDescription: budgetDescription, Anamnese: anamnese}
 	err := client.CreateClientService{}.Execute(createClientDto)
+
 	if err != nil {
-		w.Header().Set("HX-Retarget", "#formError")
 		components.ErrorMessage(fmt.Sprintf("Erro ao cadastrar o paciente: %v", err)).Render(r.Context(), w)
 		return
 	}
+
+	w.Header().Set("HX-Trigger", "patientCreated")
+	components.ErrorMessage("").Render(r.Context(), w)
 }
