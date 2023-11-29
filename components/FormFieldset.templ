@@ -4,11 +4,11 @@ type FormFieldsetProps struct {
 	Title string
 }
 
-templ FormFieldset(props FormFieldsetProps){
-				<fieldset class="grid grid-cols-12 border-slate-200 py-4 border-b">
-				<h2 class="col-span-5  font-medium"> &gt; {props.Title}</h2>
-				<div class="col-span-7 grid grid-cols-12 gap-4">
-					{children...}
-				</div>
-			</fieldset>
+templ FormFieldset(props FormFieldsetProps) {
+	<fieldset class="grid grid-cols-12 border-slate-200 py-4 border-b">
+		<h2 class="col-span-5  font-medium">&gt; { props.Title }</h2>
+		<div class="col-span-7 grid grid-cols-12 gap-4">
+			{ children... }
+		</div>
+	</fieldset>
 }

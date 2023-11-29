@@ -39,43 +39,50 @@ func (c ClientRepository) GetCount() (int, error) {
 	return clientsCount, nil
 }
 
-func (c ClientRepository) GetMany(pageSize int, skip int, orderByField string, ascendingSort bool, name string) ([]entities.Client, error) {
-	queryStr := "SELECT c.id, c.name, c.age, c.phoneNumber, a.city FROM clients c INNER JOIN addresses a ON a.clientId = c.id WHERE c.name LIKE ? ORDER BY ?"
+func (c ClientRepository) GetMany(skip int, orderByField string, ascendingSort bool, name string) ([]entities.Client, int, error) {
+	queryStr := "SELECT COUNT(*) OVER () AS totalEntities, c.id, c.name, c.age, c.phoneNumber, a.city FROM clients c INNER JOIN addresses a ON a.clientId = c.id WHERE c.name LIKE ?"
 
-	if !ascendingSort {
-		queryStr += " DESC "
+	if len(orderByField) > 0 {
+		queryStr += " ORDER BY c." + orderByField
+
+		if !ascendingSort {
+			queryStr += " DESC"
+		}
+
 	}
 
-	queryStr += "LIMIT ? OFFSET ?"
+	queryStr += " LIMIT 15 OFFSET ?"
 
 	stmt, err := c.db.Prepare(queryStr)
 
 	if err != nil {
 		log.Printf("Error preparing the get many clients statement: %v", err)
-		return []entities.Client{}, err
+		return []entities.Client{}, 0, err
 	}
 	defer stmt.Close()
 
 	var clients []entities.Client
+	var totalEntities int
 
 	nameFilterStr := "%" + name + "%"
-	rows, err := stmt.Query(nameFilterStr, orderByField, pageSize, skip)
+	rows, err := stmt.Query(nameFilterStr, skip)
 
 	if err != nil {
 		log.Printf("Error fetching the clients: %v", err)
-		return []entities.Client{}, err
+		return []entities.Client{}, 0, err
 	}
 	defer rows.Close()
 
 	for rows.Next() {
 		var client entities.Client
-		if err = rows.Scan(&client.ID, &client.Name, &client.Age, &client.Telephone, &client.City); err != nil {
+		if err = rows.Scan(&totalEntities, &client.ID, &client.Name, &client.Age, &client.Telephone, &client.City); err != nil {
 			log.Printf("Error scanning the client: %v", err)
-			return []entities.Client{}, err
+			return []entities.Client{}, 0, err
 		}
+		clients = append(clients, client)
 	}
 
-	return clients, nil
+	return clients, totalEntities, nil
 }
 
 func (c ClientRepository) Create(dto dto.CreateClientDTO) error {

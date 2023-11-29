@@ -8,7 +8,9 @@ import (
 )
 
 func NewClientRoutes() {
-	http.HandleFunc("/newPatient", middlewares.UseAuth(controllers.NewClientController{}.Index))
-	http.HandleFunc("/newPatient/handleCreatePatient", middlewares.UseAuth(controllers.NewClientController{}.CreateClient))
+	newClientController := controllers.NewClientController{}
+
+	http.HandleFunc("/newPatient", middlewares.UseAuth(newClientController.Index))
+	http.HandleFunc("/newPatient/handleCreatePatient", middlewares.UseAuth(newClientController.CreateClient))
 
 }

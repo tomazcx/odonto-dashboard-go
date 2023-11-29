@@ -7,22 +7,22 @@ templ NewClient() {
 	@layouts.DashboardLayout() {
 		<h1 class="text-2xl font-medium border-b border-slate-200 pb-4">Cadastrar paciente</h1>
 		<form hx-post="/newPatient/handleCreatePatient" hx-swap="outerHTML" hx-target="#formError">
-			@components.FormFieldset(components.FormFieldsetProps{Title: "Informações pessoais"}){
-					@components.Input(components.InputProps{Type: "text", Label: "Nome", Name: "name", ContainerStyle: "col-span-6", Required:true})
-					@components.Input(components.InputProps{Type: "number", Label: "Idade", Name: "age", ContainerStyle: "col-span-6", Required:true})
-					@components.Input(components.InputProps{Type: "text", Label: "Número de telefone", Name: "telephone", ContainerStyle: "col-span-6", Required: true})
+			@components.FormFieldset(components.FormFieldsetProps{Title: "Informações pessoais"}) {
+				@components.Input(components.InputProps{Type: "text", Label: "Nome", Name: "name", ContainerStyle: "col-span-6", Required:true})
+				@components.Input(components.InputProps{Type: "number", Label: "Idade", Name: "age", ContainerStyle: "col-span-6", Required:true})
+				@components.Input(components.InputProps{Type: "text", Label: "Número de telefone", Name: "telephone", ContainerStyle: "col-span-6", Required: true})
 			}
-			@components.FormFieldset(components.FormFieldsetProps{Title: "Endereço"}){
-					@components.Input(components.InputProps{Type: "text", Label: "Cidade", Name: "city", ContainerStyle: "col-span-6", Required:true})
-					@components.Input(components.InputProps{Type: "text", Label: "Rua e número", Name: "address", ContainerStyle: "col-span-6"})
-					@components.Input(components.InputProps{Type: "text", Label: "Bairro", Name: "district", ContainerStyle: "col-span-6"})
+			@components.FormFieldset(components.FormFieldsetProps{Title: "Endereço"}) {
+				@components.Input(components.InputProps{Type: "text", Label: "Cidade", Name: "city", ContainerStyle: "col-span-6", Required:true})
+				@components.Input(components.InputProps{Type: "text", Label: "Rua e número", Name: "address", ContainerStyle: "col-span-6"})
+				@components.Input(components.InputProps{Type: "text", Label: "Bairro", Name: "district", ContainerStyle: "col-span-6"})
 			}
-			@components.FormFieldset(components.FormFieldsetProps{Title: "Orçamento"}){
-					@components.Input(components.InputProps{Type: "text", Label: "Orçamento", Name: "budget", ContainerStyle: "col-span-6"})
-					@components.Textarea(components.TextareaProps{Label: "ObservaçÕes", Name: "budgetDescription", ContainerStyle: "col-span-12"})
+			@components.FormFieldset(components.FormFieldsetProps{Title: "Orçamento"}) {
+				@components.Input(components.InputProps{Type: "text", Label: "Orçamento", Name: "budget", ContainerStyle: "col-span-6"})
+				@components.Textarea(components.TextareaProps{Label: "ObservaçÕes", Name: "budgetDescription", ContainerStyle: "col-span-12"})
 			}
-			@components.FormFieldset(components.FormFieldsetProps{Title: "Anamnese"}){
-					@components.Textarea(components.TextareaProps{Label: "Descrição", Name: "anamnese", ContainerStyle: "col-span-12"})
+			@components.FormFieldset(components.FormFieldsetProps{Title: "Anamnese"}) {
+				@components.Textarea(components.TextareaProps{Label: "Descrição", Name: "anamnese", ContainerStyle: "col-span-12"})
 			}
 			<div class="py-8 flex items-end flex-col gap-2">
 				@components.ErrorMessage("")

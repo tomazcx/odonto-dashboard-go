@@ -1,18 +1,18 @@
 package components
 
 type TextareaProps struct {
-	Label string
-	Name string
+	Label          string
+	Name           string
 	ContainerStyle string
 }
 
-templ Textarea(props TextareaProps){
-	<div class={"form-control w-full", props.ContainerStyle}>
-		<label for={props.Name} class="label">
-			<span class="label-text">	
-				{props.Label}
+templ Textarea(props TextareaProps) {
+	<div class={ "form-control w-full", props.ContainerStyle }>
+		<label for={ props.Name } class="label">
+			<span class="label-text">
+				{ props.Label }
 			</span>
 		</label>
-		<textarea id={props.Name} name={props.Name} class="textarea textarea-bordered" />
+		<textarea id={ props.Name } name={ props.Name } class="textarea textarea-bordered"></textarea>
 	</div>
 }

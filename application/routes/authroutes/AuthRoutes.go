@@ -7,8 +7,11 @@ import (
 )
 
 func AuthRoutes() {
-	http.HandleFunc("/login", controllers.AuthController{}.Index)
 
-	http.HandleFunc("/logout", controllers.AuthController{}.Logout)
-	http.HandleFunc("/login/submit", controllers.AuthController{}.Login)
+	authController := controllers.AuthController{}
+
+	http.HandleFunc("/login", authController.Index)
+
+	http.HandleFunc("/logout", authController.Logout)
+	http.HandleFunc("/login/submit", authController.Login)
 }

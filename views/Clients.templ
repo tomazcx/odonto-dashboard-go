@@ -2,35 +2,42 @@ package views
 
 import (
 	"github.com/tomazcx/odonto-dashboard-go/components"
+	"github.com/tomazcx/odonto-dashboard-go/data/entities"
 	"github.com/tomazcx/odonto-dashboard-go/views/layouts"
 )
 
-templ Clients() {
+type ClientsViewProps struct {
+	Clients       []entities.Client
+	TotalCount    int
+	NumberOfPages int
+}
+
+templ Clients(props ClientsViewProps) {
 	@layouts.DashboardLayout() {
 		<div class="flex flex-col gap-4">
 			<section class="flex items-center justify-between">
 				<h1 class="text-2xl font-medium">Pacientes</h1>
 				<a href="/newPatient" class="btn btn-primary">Novo +</a>
 			</section>
-			<section class="flex justify-between flex-wrap gap-12">
-				<div class="join">
+			<section class="flex items-center flex-wrap gap-4">
+				<form hx-indicator="#tableLoading" hx-post="/patients/getPatients" hx-target="#clientsTable" hx-swap="outerHtml" class="join">
 					<div>
 						<div>
-							<input class="input input-bordered join-item" placeholder="Pesquisar por nome"/>
+							<input type="search" name="name" id="name" class="input input-bordered join-item" placeholder="Pesquisar por nome"/>
 						</div>
 					</div>
-					<select class="select select-bordered join-item">
-						<option disabled selected>Ordenar por:</option>
-						<option>Criação</option>
-						<option>Nome (crescente)</option>
-						<option>Nome (decrescente)</option>
-						<option>Idade (crescente)</option>
-						<option>Idade (decrescente)</option>
+					<select id="orderBy" name="orderBy" class="select select-bordered join-item">
+						<option value="" disabled selected>Ordenar por:</option>
+						<option value="name/ascending">Nome (crescente)</option>
+						<option value="name/descending">Nome (decrescente)</option>
+						<option value="age/ascending">Idade (crescente)</option>
+						<option value="age/descending">Idade (decrescente)</option>
 					</select>
 					<button class="btn join-item">Aplicar</button>
-				</div>
+				</form>
+			<img class="htmx-indicator" src="/public/assets/loading.gif" width="48" height="48" id="tableLoading"  />
 			</section>
-			@components.ClientsTable()
+			@components.ClientsTable(props.Clients, props.TotalCount, props.NumberOfPages, 1)
 		</div>
 	}
 }
