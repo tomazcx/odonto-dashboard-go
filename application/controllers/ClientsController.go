@@ -1,8 +1,9 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
-	"strings"
+	"strconv"
 
 	"github.com/tomazcx/odonto-dashboard-go/application/utils/tableutils"
 	"github.com/tomazcx/odonto-dashboard-go/components"
@@ -11,11 +12,12 @@ import (
 )
 
 const ENTITIES_PER_PAGE = 15
+const PAGE_RANGE_SIZE = 3
 
 type FiltersState struct {
-	Name    string
-	OrderBy string
-	Page    int
+	name          string
+	orderBy       string
+	totalEntities int
 }
 
 var filtersState FiltersState
@@ -29,10 +31,17 @@ func (c ClientsController) Index(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Erro ao buscar os pacientes na base de dados. Contate o administrador do sistema.", http.StatusInternalServerError)
 		return
 	}
+	filtersState.totalEntities = totalCount
 
 	numOfPages := tableutils.CalculatePagination(totalCount, ENTITIES_PER_PAGE)
+	startPage := 1
+	endPage := PAGE_RANGE_SIZE + startPage - 1
 
-	views.Clients(views.ClientsViewProps{Clients: clients, TotalCount: totalCount, NumberOfPages: numOfPages}).Render(r.Context(), w)
+	if endPage > numOfPages {
+		endPage = numOfPages
+	}
+
+	views.Clients(views.ClientsViewProps{Clients: clients, TotalCount: totalCount, StartPage: startPage, EndPage: endPage}).Render(r.Context(), w)
 }
 
 func (c ClientsController) GetClients(w http.ResponseWriter, r *http.Request) {
@@ -54,22 +63,11 @@ func (c ClientsController) GetClients(w http.ResponseWriter, r *http.Request) {
 
 	var field string
 	var ascendingSort bool
+	err = tableutils.GetFieldAndAscending(orderBy, &field, &ascendingSort)
 
-	if len(orderBy) > 0 {
-		parts := strings.Split(orderBy, "/")
-
-		if len(parts) != 2 {
-			http.Error(w, "Erro ao processar o formulário.", http.StatusInternalServerError)
-			return
-		}
-
-		field = parts[0]
-
-		if parts[1] == "descending" {
-			ascendingSort = false
-		} else {
-			ascendingSort = true
-		}
+	if err != nil {
+		http.Error(w, fmt.Sprintf("Erro: %v", err), http.StatusUnprocessableEntity)
+		return
 	}
 
 	clients, totalCount, err := client.GetClientsService{}.Execute(0, field, ascendingSort, name)
@@ -79,10 +77,85 @@ func (c ClientsController) GetClients(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	filtersState.name = name
+	filtersState.orderBy = orderBy
+	filtersState.totalEntities = totalCount
+
 	numOfPages := tableutils.CalculatePagination(totalCount, ENTITIES_PER_PAGE)
-	components.ClientsTable(clients, totalCount, numOfPages, 1).Render(r.Context(), w)
+	startPage := 1
+	endPage := PAGE_RANGE_SIZE + startPage - 1
+
+	if endPage > numOfPages {
+		endPage = numOfPages
+	}
+
+	components.ClientsTable(clients, totalCount, startPage, endPage, 1).Render(r.Context(), w)
 }
 
 func (c ClientsController) ChangePage(w http.ResponseWriter, r *http.Request) {
 
+	if r.Method != http.MethodGet {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	page := r.URL.Query().Get("page")
+	pageInt, err := strconv.Atoi(page)
+
+	if err != nil {
+		http.Error(w, "Página inválida.", http.StatusUnprocessableEntity)
+		return
+	}
+
+	name := filtersState.name
+	orderBy := filtersState.orderBy
+	totalEntities := filtersState.totalEntities
+
+	var field string
+	var ascendingSort bool
+	err = tableutils.GetFieldAndAscending(orderBy, &field, &ascendingSort)
+
+	if err != nil {
+		http.Error(w, fmt.Sprintf("Erro: %v", err), http.StatusUnprocessableEntity)
+		return
+	}
+
+	totalPages := tableutils.CalculatePagination(totalEntities, ENTITIES_PER_PAGE)
+
+	if pageInt > totalPages || pageInt == 0 {
+		http.Error(w, "Erro: Página inválida.", http.StatusUnprocessableEntity)
+		return
+	}
+
+	var skip, selectedPage int
+
+	if pageInt == -1 {
+		skip = (totalPages - 1) * ENTITIES_PER_PAGE
+		selectedPage = totalPages
+	} else {
+		skip = (pageInt - 1) * ENTITIES_PER_PAGE
+		selectedPage = pageInt
+	}
+
+	clients, totalCount, err := client.GetClientsService{}.Execute(skip, field, ascendingSort, name)
+
+	if err != nil {
+		http.Error(w, "Erro ao buscar os pacientes na base de dados. Contate o administrador do sistema.", http.StatusInternalServerError)
+		return
+	}
+
+	numOfPages := tableutils.CalculatePagination(totalCount, ENTITIES_PER_PAGE)
+	startPage := selectedPage - PAGE_RANGE_SIZE/2
+
+	if startPage < 1 {
+		startPage = 1
+	}
+
+	endPage := PAGE_RANGE_SIZE + startPage - 1
+
+	if endPage > numOfPages {
+		endPage = numOfPages
+	}
+
+	components.ClientsTable(clients, totalCount, startPage, endPage, selectedPage).Render(r.Context(), w)
 }

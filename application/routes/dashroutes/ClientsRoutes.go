@@ -12,4 +12,5 @@ func ClientsRoutes() {
 
 	http.HandleFunc("/patients", middlewares.UseAuth(clientsController.Index))
 	http.HandleFunc("/patients/getPatients", middlewares.UseAuth(clientsController.GetClients))
+	http.HandleFunc("/patients/getPage", middlewares.UseAuth(clientsController.ChangePage))
 }

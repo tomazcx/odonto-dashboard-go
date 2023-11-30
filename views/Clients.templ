@@ -7,9 +7,10 @@ import (
 )
 
 type ClientsViewProps struct {
-	Clients       []entities.Client
-	TotalCount    int
-	NumberOfPages int
+	Clients    []entities.Client
+	StartPage  int
+	EndPage    int
+	TotalCount int
 }
 
 templ Clients(props ClientsViewProps) {
@@ -35,9 +36,9 @@ templ Clients(props ClientsViewProps) {
 					</select>
 					<button class="btn join-item">Aplicar</button>
 				</form>
-			<img class="htmx-indicator" src="/public/assets/loading.gif" width="48" height="48" id="tableLoading"  />
+				<img class="htmx-indicator" src="/public/assets/loading.gif" width="48" height="48" id="tableLoading"/>
 			</section>
-			@components.ClientsTable(props.Clients, props.TotalCount, props.NumberOfPages, 1)
+			@components.ClientsTable(props.Clients, props.TotalCount, props.StartPage, props.EndPage, 1)
 		</div>
 	}
 }
