@@ -39,7 +39,7 @@ templ ClientsTable(clients []entities.Client, totalCount int, startPage int, end
 				<tbody>
 					for _, client := range clients {
 						<tr>
-							<td><a class="link link-primary" href={ templ.URL("/client/" + client.ID) }>{ client.Name }</a></td>
+							<td><a class="link link-primary" href={ templ.URL("/patient?id=" + client.ID) }>{ client.Name }</a></td>
 							<td>{ strconv.Itoa(client.Age) }</td>
 							<td>{ client.Telephone }</td>
 							<td>{ client.City }</td>

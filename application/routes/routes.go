@@ -8,5 +8,6 @@ import (
 func DefineRoutes() {
 	authroutes.AuthRoutes()
 	dashroutes.ClientsRoutes()
+	dashroutes.ClientRoutes()
 	dashroutes.NewClientRoutes()
 }

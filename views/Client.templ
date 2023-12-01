@@ -1,0 +1,48 @@
+package views
+
+import (
+	"github.com/tomazcx/odonto-dashboard-go/views/layouts"
+	"github.com/tomazcx/odonto-dashboard-go/components"
+)
+
+templ Client(){
+	@layouts.DashboardLayout() {
+		<section class="flex flex-col pb-4 gap-6">
+			<div class="flex justify-between items-center">
+				<h1 class="text-2xl text-left font-medium">Ficha de paciente</h1>
+				<button class="btn btn-error">Deletar</button>
+			</div>
+			<nav role="tablist" class="tabs tabs-lifted flex">
+				<a role="tab" class="tab tab-active whitespace-nowrap">Dados do paciente</a>
+				<a role="tab" class="tab w-full justify-start">Consultas</a>
+			</nav>
+		</section>
+		<section class="grid grid-cols-12 justify-between">
+			<form class="col-span-6">
+			@components.FormFieldset(components.FormFieldsetProps{Title: "Informações pessoais", UseTopTitle: true}) {
+				@components.Input(components.InputProps{Type: "text", Label: "Nome", Name: "name", ContainerStyle: "col-span-6", Required:true})
+				@components.Input(components.InputProps{Type: "number", Label: "Idade", Name: "age", ContainerStyle: "col-span-6", Required:true})
+				@components.Input(components.InputProps{Type: "text", Label: "Número de telefone", Name: "telephone", ContainerStyle: "col-span-6", Required: true})
+			}
+			@components.FormFieldset(components.FormFieldsetProps{Title: "Endereço", UseTopTitle: true}) {
+				@components.Input(components.InputProps{Type: "text", Label: "Cidade", Name: "city", ContainerStyle: "col-span-6", Required:true})
+				@components.Input(components.InputProps{Type: "text", Label: "Rua e número", Name: "address", ContainerStyle: "col-span-6"})
+				@components.Input(components.InputProps{Type: "text", Label: "Bairro", Name: "district", ContainerStyle: "col-span-6"})
+			}
+			@components.FormFieldset(components.FormFieldsetProps{Title: "Orçamento", UseTopTitle: true}) {
+				@components.Input(components.InputProps{Type: "text", Label: "Orçamento", Name: "budget", ContainerStyle: "col-span-6"})
+				@components.Textarea(components.TextareaProps{Label: "ObservaçÕes", Name: "budgetDescription", ContainerStyle: "col-span-12"})
+			}
+			@components.FormFieldset(components.FormFieldsetProps{Title: "Anamnese", UseTopTitle: true}) {
+				@components.Textarea(components.TextareaProps{Label: "Descrição", Name: "anamnese", ContainerStyle: "col-span-12"})
+			}
+				<div class="flex justify-end mt-4">
+					<button class="btn btn-primary">Salvar</button>
+				</div>
+			</form>
+			<div class="col-span-6 p-4 pr-0 flex justify-end items-start">
+				<img src="/public/assets/odontograma.webp" class="w-10/12 object-contain" />
+			</div>
+		</section>
+	}
+}
