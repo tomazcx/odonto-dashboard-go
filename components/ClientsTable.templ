@@ -7,11 +7,11 @@ import (
 
 templ ClientsTable(clients []entities.Client, totalCount int, startPage int, endPage int, selectedPage int) {
 	if len(clients) == 0 {
-		<section id="clientsTable" class="min-h-[830px]">
+		<section id="clientsTable">
 			<div class="px-4 py-2 border border-slate-200 rounded-t-lg">
 				<span class="text-sm">0 Resultados </span>
 			</div>
-			<div class="border-x border-slate-200 flex items-center justify-center">
+			<div class="border-x border-slate-200 flex items-center justify-center min-h-[200px]">
 				<p class="text-center">Nenhum resultado encontrado.</p>
 			</div>
 			<div class="border border-slate-200 rounded-b-lg flex justify-end px-4 py-2 gap-1.5">
@@ -27,13 +27,14 @@ templ ClientsTable(clients []entities.Client, totalCount int, startPage int, end
 			<div class="px-4 py-2 border border-slate-200 rounded-t-lg">
 				<span class="text-sm">{ strconv.Itoa(totalCount) } Resultados </span>
 			</div>
-			<table class="table border-x  border-slate-200">
+			<table class="table border-x border-slate-200">
 				<thead>
 					<tr>
 						<th>Nome</th>
 						<th>Idade</th>
 						<th>Telefone</th>
 						<th>Cidade</th>
+						<th>Ações</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -43,6 +44,7 @@ templ ClientsTable(clients []entities.Client, totalCount int, startPage int, end
 							<td>{ strconv.Itoa(client.Age) }</td>
 							<td>{ client.Telephone }</td>
 							<td>{ client.City }</td>
+							<td>@DeleteModal(DeleteModalProps{ID: client.ID, URL: "/patient/delete", Title: "Deseja deletar o paciente?", Description: "Se confirmar, os dados do paciente e suas consultas serão apagados permanentemente."})</td>
 						</tr>
 					}
 				</tbody>

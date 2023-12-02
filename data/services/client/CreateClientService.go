@@ -1,6 +1,7 @@
 package client
 
 import (
+	"context"
 	"errors"
 
 	"github.com/tomazcx/odonto-dashboard-go/data/dto"
@@ -9,9 +10,9 @@ import (
 
 type CreateClientService struct{}
 
-func (c CreateClientService) Execute(data dto.CreateClientDTO) error {
+func (c CreateClientService) Execute(ctx context.Context, data dto.CreateClientDTO) error {
 	clientRepository := repositories.NewClientRepository()
-	err := clientRepository.Create(data)
+	err := clientRepository.Create(ctx, data)
 
 	if err != nil {
 		return errors.New("Error registering the client. Contact the system administrator.")

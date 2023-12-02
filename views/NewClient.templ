@@ -26,7 +26,10 @@ templ NewClient() {
 			}
 			<div class="py-8 flex items-end flex-col gap-2">
 				@components.ErrorMessage("")
-				<button class="btn btn-primary">Cadastrar</button>
+				<div class="flex gap-4">
+					<button type="reset" class="btn btn-error">Limpar formulário</button>
+					<button class="btn btn-primary">Cadastrar</button>
+				</div>
 			</div>
 		</form>
 		<script>

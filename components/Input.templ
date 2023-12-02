@@ -6,18 +6,12 @@ type InputProps struct {
 	Label          string
 	ErrorMessage   string
 	Value          string
-	HxRequest      string
 	ContainerStyle string
 	Required       bool
 }
 
 templ Input(props InputProps) {
 	<div
- 		if len(props.HxRequest) > 0 {
-			hx-post={ props.HxRequest }
-			hx-trigger="change"
-			hx-swap="outerHTML"
-		}
  		id={ props.Name + "-field" }
  		class={ "form-control w-full", props.ContainerStyle }
 	>

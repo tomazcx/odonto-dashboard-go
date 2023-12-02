@@ -41,7 +41,7 @@ func (a NewClientController) CreateClient(w http.ResponseWriter, r *http.Request
 	ageInt, _ := strconv.Atoi(age)
 
 	createClientDto := dto.CreateClientDTO{Name: name, Age: ageInt, Telephone: telephone, City: city, Address: address, District: district, Budget: budget, BudgetDescription: budgetDescription, Anamnese: anamnese}
-	err := client.CreateClientService{}.Execute(createClientDto)
+	err := client.CreateClientService{}.Execute(r.Context(), createClientDto)
 
 	if err != nil {
 		components.ErrorMessage(fmt.Sprintf("Erro ao cadastrar o paciente: %v", err)).Render(r.Context(), w)

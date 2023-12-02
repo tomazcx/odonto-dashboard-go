@@ -1,6 +1,7 @@
 package repositories
 
 import (
+	"context"
 	"database/sql"
 	"log"
 
@@ -19,24 +20,43 @@ func NewClientRepository() ClientRepository {
 	return ClientRepository{db: dbInstance}
 }
 
-func (c ClientRepository) GetCount() (int, error) {
-	stmt, err := c.db.Prepare("SELECT COUNT(*) FROM clients")
+func (c ClientRepository) Exists(id string) (bool, error) {
+	stmt, err := c.db.Prepare("SELECT id FROM clients WHERE id = ?")
 
 	if err != nil {
-		log.Printf("Error preparing the clients count statement: %v", err)
-		return 0, err
+		log.Printf("Error preparing the client exists statement: %v", err)
+		return false, err
 	}
 	defer stmt.Close()
 
-	var clientsCount int
-	err = stmt.QueryRow().Scan(&clientsCount)
+	var clientId string
+	err = stmt.QueryRow(id).Scan(&clientId)
 
 	if err != nil {
-		log.Printf("Error fetching the clients count statement: %v", err)
-		return 0, err
+		return false, err
 	}
 
-	return clientsCount, nil
+	return true, nil
+}
+
+func (c ClientRepository) GetClient(id string) (entities.Client, error) {
+	stmt, err := c.db.Prepare("SELECT c.id, c.name, c.age, c.phoneNumber, a.city, a.streetAndNumber, a.district, c.budget, c.budgetDescription, c.anamnese FROM clients c INNER JOIN addresses a ON a.clientId = c.id WHERE c.id = ?")
+
+	if err != nil {
+		log.Printf("Error preparing the client statement: %v", err)
+		return entities.Client{}, err
+	}
+	defer stmt.Close()
+
+	var client entities.Client
+	err = stmt.QueryRow(id).Scan(&client.ID, &client.Name, &client.Age, &client.Telephone, &client.City, &client.Address, &client.District, &client.Budget, &client.BudgetDescription, &client.Anamnese)
+
+	if err != nil {
+		log.Printf("Error fetching the client data statement: %v", err)
+		return entities.Client{}, err
+	}
+
+	return client, nil
 }
 
 func (c ClientRepository) GetMany(skip int, orderByField string, ascendingSort bool, name string) ([]entities.Client, int, error) {
@@ -85,8 +105,88 @@ func (c ClientRepository) GetMany(skip int, orderByField string, ascendingSort b
 	return clients, totalEntities, nil
 }
 
-func (c ClientRepository) Create(dto dto.CreateClientDTO) error {
-	stmt, err := c.db.Prepare("INSERT INTO clients (id, name, age, phoneNumber, budget, budgetDescription, anamnese) VALUES (?, ?, ?, ?, ?, ?, ?)")
+func (c ClientRepository) Create(ctx context.Context, dto dto.CreateClientDTO) error {
+
+	tx, err := c.db.BeginTx(ctx, nil)
+
+	if err != nil {
+		log.Printf("Error begining the create transaction: %v", err)
+		return err
+	}
+	defer tx.Rollback()
+
+	clientId := uuid.New()
+	if _, err = tx.ExecContext(ctx, "INSERT INTO clients (id, name, age, phoneNumber, budget, budgetDescription, anamnese) VALUES (?, ?, ?, ?, ?, ?, ?)",
+		clientId,
+		dto.Name,
+		dto.Age,
+		dto.Telephone,
+		dto.Budget,
+		dto.BudgetDescription,
+		dto.Anamnese); err != nil {
+		log.Printf("Error creating the client: %v", err)
+		return err
+	}
+
+	if _, err := tx.ExecContext(ctx, "INSERT INTO addresses (id, city, district, streetAndNumber, clientId) VALUES (?, ?, ?, ?, ?)",
+		uuid.New(),
+		dto.City,
+		dto.District,
+		dto.Address,
+		clientId); err != nil {
+		log.Printf("Error creating the client address: %v", err)
+		return err
+	}
+
+	if err = tx.Commit(); err != nil {
+		log.Printf("Error commiting the transaction: %v", err)
+		return err
+	}
+
+	return nil
+}
+
+func (c ClientRepository) Update(ctx context.Context, id string, dto dto.UpdateClientDTO) error {
+
+	tx, err := c.db.BeginTx(ctx, nil)
+
+	if err != nil {
+		log.Printf("Error begining the update transaction: %v", err)
+		return err
+	}
+	defer tx.Rollback()
+
+	if _, err = tx.ExecContext(ctx, "UPDATE clients SET name = ?, age = ?, phoneNumber = ?, budget = ?, budgetDescription = ?, anamnese = ? WHERE id = ?",
+		dto.Name,
+		dto.Age,
+		dto.Telephone,
+		dto.Budget,
+		dto.BudgetDescription,
+		dto.Anamnese,
+		id); err != nil {
+		log.Printf("Error updating the client: %v", err)
+		return err
+	}
+
+	if _, err = tx.ExecContext(ctx, "UPDATE addresses SET city = ?, district = ?, streetAndNumber = ? WHERE clientId = ?",
+		dto.City,
+		dto.District,
+		dto.Address,
+		id); err != nil {
+		log.Printf("Error updating the client address: %v", err)
+		return err
+	}
+
+	if err = tx.Commit(); err != nil {
+		log.Printf("Error commiting the transaction: %v", err)
+		return err
+	}
+
+	return nil
+}
+
+func (c ClientRepository) Delete(id string) error {
+	stmt, err := c.db.Prepare("DELETE FROM clients WHERE id = ?")
 
 	if err != nil {
 		log.Printf("Error preparing a create client statement: %v", err)
@@ -94,27 +194,10 @@ func (c ClientRepository) Create(dto dto.CreateClientDTO) error {
 	}
 	defer stmt.Close()
 
-	clientId := uuid.New()
-	_, err = stmt.Exec(clientId, dto.Name, dto.Age, dto.Telephone, dto.Budget, dto.BudgetDescription, dto.Anamnese)
+	_, err = stmt.Exec(id)
 
 	if err != nil {
-		log.Printf("Error creating the client: %v", err)
-		return err
-	}
-
-	stmtAddrs, err := c.db.Prepare("INSERT INTO addresses (id, city, district, streetAndNumber, clientId) VALUES (?, ?, ?, ?, ?)")
-
-	if err != nil {
-		log.Printf("Error preparing the create address statement: %v", err)
-		return err
-	}
-
-	defer stmtAddrs.Close()
-
-	_, err = stmtAddrs.Exec(uuid.New(), dto.City, dto.District, dto.Address, clientId)
-
-	if err != nil {
-		log.Printf("Error creating the client address: %v", err)
+		log.Printf("Error deleting client with id %v: %v", id, err)
 		return err
 	}
 

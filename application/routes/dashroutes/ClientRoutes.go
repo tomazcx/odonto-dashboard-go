@@ -8,7 +8,8 @@ import (
 )
 
 func ClientRoutes() {
-	clientsController := controllers.ClientController{}
+	clientController := controllers.ClientController{}
 
-	http.HandleFunc("/patient", middlewares.UseAuth(clientsController.Index))
+	http.HandleFunc("/patient", middlewares.UseAuth(clientController.Index))
+	http.HandleFunc("/patient/delete", middlewares.UseAuth(clientController.DeleteClient))
 }

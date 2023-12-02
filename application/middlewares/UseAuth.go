@@ -12,8 +12,14 @@ func UseAuth(next http.HandlerFunc) http.HandlerFunc {
 		session := authutils.GetStoreSession(r)
 
 		if _, ok := session.Values["logged"]; !ok {
-			w.Header().Set("HX-Redirect", "/login")
-			http.Redirect(w, r, "/login", http.StatusFound)
+
+			isHtmxRequest := r.Header.Get("HX-Request")
+
+			if isHtmxRequest == "true" {
+				w.Header().Set("HX-Redirect", "/login")
+			} else {
+				http.Redirect(w, r, "/login", http.StatusFound)
+			}
 			return
 		}
 
