@@ -34,7 +34,7 @@ templ ClientsTable(clients []entities.Client, totalCount int, startPage int, end
 						<th>Idade</th>
 						<th>Telefone</th>
 						<th>Cidade</th>
-						<th>Ações</th>
+						<th></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -44,7 +44,11 @@ templ ClientsTable(clients []entities.Client, totalCount int, startPage int, end
 							<td>{ strconv.Itoa(client.Age) }</td>
 							<td>{ client.Telephone }</td>
 							<td>{ client.City }</td>
-							<td>@DeleteModal(DeleteModalProps{ID: client.ID, URL: "/patient/delete", Title: "Deseja deletar o paciente?", Description: "Se confirmar, os dados do paciente e suas consultas serão apagados permanentemente."})</td>
+							<td>
+								@DeleteModal(DeleteModalProps{ID: client.ID, URL: "/patient/delete", Title: "Deseja deletar o paciente?", Description: "Se confirmar, os dados do paciente e suas consultas serão apagados permanentemente."}){
+									<img src="/public/assets/trash-simple.svg" class="cursor-pointer hover:opacity-70 transition-opacity" />
+								}	
+							</td>
 						</tr>
 					}
 				</tbody>

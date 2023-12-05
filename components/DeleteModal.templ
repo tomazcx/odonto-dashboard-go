@@ -8,7 +8,9 @@ type DeleteModalProps struct {
 }
 
 templ DeleteModal(props DeleteModalProps) {
-	<button class="btn btn-error" onclick="deleteModal.showModal()">Deletar</button>
+	<div onclick="deleteModal.showModal()">
+		{children...}
+	</div>
 	<dialog id="deleteModal" class="modal rounded-lg">
 	  <div class="modal-box">
 		<h3 class="font-bold text-lg">{props.Title}</h3>

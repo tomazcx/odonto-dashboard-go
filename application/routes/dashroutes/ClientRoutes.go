@@ -12,4 +12,5 @@ func ClientRoutes() {
 
 	http.HandleFunc("/patient", middlewares.UseAuth(clientController.Index))
 	http.HandleFunc("/patient/delete", middlewares.UseAuth(clientController.DeleteClient))
+	http.HandleFunc("/patient/update", middlewares.UseAuth(clientController.UpdateClient))
 }
