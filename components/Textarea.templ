@@ -4,7 +4,7 @@ type TextareaProps struct {
 	Label          string
 	Name           string
 	ContainerStyle string
-	Value 		   string
+	Value          string
 }
 
 templ Textarea(props TextareaProps) {
@@ -14,6 +14,6 @@ templ Textarea(props TextareaProps) {
 				{ props.Label }
 			</span>
 		</label>
-		<textarea id={ props.Name } name={ props.Name } class="textarea textarea-bordered">{props.Value}</textarea>
+		<textarea id={ props.Name } name={ props.Name } class="textarea textarea-bordered">{ props.Value }</textarea>
 	</div>
 }

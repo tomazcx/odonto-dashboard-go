@@ -1,13 +1,14 @@
 package components
 
 import (
-	"github.com/tomazcx/odonto-dashboard-go/data/entities"
 	"strconv"
+
+	"github.com/tomazcx/odonto-dashboard-go/data/entities"
 )
 
-templ ClientsTable(clients []entities.Client, totalCount int, startPage int, endPage int, selectedPage int) {
-	if len(clients) == 0 {
-		<div id="clientsTable">
+templ AppointmentsTable(appointments []entities.Appointment, totalCount int, startPage int, endPage int, selectedPage int) {
+	if totalCount == 0 {
+		<div hx-get="/appointment/getPage?page=1" hx-trigger="reloadTable from:body" id="appointmentsTable">
 			<div class="px-4 py-2 border border-slate-200 rounded-t-lg">
 				<span class="text-sm">0 Resultados </span>
 			</div>
@@ -25,29 +26,27 @@ templ ClientsTable(clients []entities.Client, totalCount int, startPage int, end
 			</div>
 		</div>
 	} else {
-		<div id="clientsTable">
+		<div hx-get="/appointment/getPage?page=1" hx-trigger="reloadTable from:body" id="appointmentsTable">
 			<div class="px-4 py-2 border border-slate-200 rounded-t-lg">
 				<span class="text-sm">{ strconv.Itoa(totalCount) } Resultados </span>
 			</div>
 			<table class="table border-x border-slate-200">
 				<thead>
 					<tr>
-						<th>Nome</th>
-						<th>Idade</th>
-						<th>Telefone</th>
-						<th>Cidade</th>
+						<th>Data</th>
+						<th>Dentes operados</th>
+						<th>Procedimento</th>
 						<th></th>
 					</tr>
 				</thead>
 				<tbody>
-					for _, client := range clients {
+					for _, appointment := range appointments {
 						<tr>
-							<td><a class="link link-primary" href={ templ.URL("/patient?id=" + client.ID) }>{ client.Name }</a></td>
-							<td>{ strconv.Itoa(client.Age) }</td>
-							<td>{ client.Telephone }</td>
-							<td>{ client.City }</td>
+							<td>{ appointment.Date }</td>
+							<td>{ appointment.Teeth }</td>
+							<td>{ appointment.Proccedure }</td>
 							<td>
-								@DeleteModal(DeleteModalProps{ID: client.ID, URL: "/patient/delete", Title: "Deseja deletar o paciente?", Description: "Se confirmar, os dados do paciente e suas consultas serão apagados permanentemente."}) {
+								@DeleteModal(DeleteModalProps{ID: appointment.ID, URL: "/appointment/delete", Title: "Deseja deletar a consulta?", Description: "Se confirmar, os dados da consulta serão apagados permanentemente."}) {
 									<img src="/public/assets/trash-simple.svg" class="cursor-pointer hover:opacity-70 transition-opacity"/>
 								}
 							</td>
@@ -57,20 +56,20 @@ templ ClientsTable(clients []entities.Client, totalCount int, startPage int, end
 			</table>
 			<div class="border border-slate-200 rounded-b-lg flex justify-end px-4 py-2 gap-1.5">
 				<div class="join">
-					<button hx-target="#clientsTable" hx-swap="outerHTML" hx-get="/patients/getPage?page=1" class="join-item btn btn-md">«</button>
-					<button hx-target="#clientsTable" hx-swap="outerHTML" hx-get={ "/patients/getPage?page=" + strconv.Itoa(selectedPage-1) } class="join-item btn btn-md">‹</button>
+					<button hx-target="#appointmentsTable" hx-swap="outerHTML" hx-get="/appointment/getPage?page=1" class="join-item btn btn-md">«</button>
+					<button hx-target="#appointmentsTable" hx-swap="outerHTML" hx-get={ "/appointment/getPage?page=" + strconv.Itoa(selectedPage-1) } class="join-item btn btn-md">‹</button>
 					for i := startPage; i <= endPage; i++ {
 						<button
  							if selectedPage != i {
-								hx-target="#clientsTable"
+								hx-target="#appointmentsTable"
 								hx-swap="outerHTML"
-								hx-get={ "/patients/getPage?page=" + strconv.Itoa(i) }
+								hx-get={ "/appointment/getPage?page=" + strconv.Itoa(i) }
 							}
  							class={ "join-item btn btn-md", templ.KV("btn-active", selectedPage == i) }
 						>{ strconv.Itoa(i) }</button>
 					}
-					<button hx-target="#clientsTable" hx-swap="outerHTML" hx-get={ "/patients/getPage?page=" + strconv.Itoa(selectedPage+1) } class="join-item btn btn-md">›</button>
-					<button hx-target="#clientsTable" hx-swap="outerHTML" hx-get="/patients/getPage?page=-1" class="join-item btn btn-md">»</button>
+					<button hx-target="#appointmentsTable" hx-swap="outerHTML" hx-get={ "/appointment/getPage?page=" + strconv.Itoa(selectedPage+1) } class="join-item btn btn-md">›</button>
+					<button hx-target="#appointmentsTable" hx-swap="outerHTML" hx-get="/appointment/getPage?page=-1" class="join-item btn btn-md">»</button>
 				</div>
 			</div>
 		</div>

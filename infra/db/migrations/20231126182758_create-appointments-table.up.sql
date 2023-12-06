@@ -5,5 +5,5 @@ CREATE TABLE
         teeth VARCHAR(191) NOT NULL,
         proccedure VARCHAR(191) NOT NULL,
         clientId VARCHAR(191) NOT NULL,
-        CONSTRAINT fk_client_appointments FOREIGN KEY(id) REFERENCES clients(id) ON DELETE CASCADE
+        CONSTRAINT fk_client_appointments FOREIGN KEY(clientId) REFERENCES clients(id) ON DELETE CASCADE
     );

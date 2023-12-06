@@ -28,7 +28,6 @@ func main() {
 	http.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir("./public"))))
 
 	routes.DefineRoutes()
-	routes.DashboardRoutes()
 
 	port := os.Getenv("PORT")
 

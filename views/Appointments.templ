@@ -1,0 +1,75 @@
+package views
+
+import (
+	"github.com/tomazcx/odonto-dashboard-go/views/layouts"
+	"github.com/tomazcx/odonto-dashboard-go/data/entities"
+	"github.com/tomazcx/odonto-dashboard-go/components"
+)
+
+type AppointmentsViewProps struct {
+	Appointments []entities.Appointment
+	ClientID	string
+	StartPage  int
+	EndPage    int
+	TotalCount int
+}
+
+templ Appointments(props AppointmentsViewProps) {
+	@layouts.DashboardLayout() {
+		<section class="flex flex-col pb-4 gap-6">
+			<div class="flex justify-between items-end">
+				<div class="flex flex-col gap-2">
+					<a href="/patients" class="link link-primary"><span class="text-xl">‹</span> Todos os pacientes</a>
+					<h1 class="text-2xl text-left font-medium">Ficha de paciente</h1>
+				</div>
+				<button class="btn btn-primary" onclick="createAppointmentModal.showModal()">Nova +</button>
+
+				//Create appointment modal
+				<dialog id="createAppointmentModal" class="modal">
+					<form hx-post="/appointment/create" hx-target="#formError" hx-swap="outerHTML" class="modal-box w-11/12 max-w-xl flex flex-col gap-4">
+						<div class="flex flex-col gap-2">
+							<h3 class="font-bold text-lg">Registrar nova consulta</h3>
+							<p class="text-sm">Cadastre uma nova consulta para o paciente aqui. Clique em cadastrar quando tiver pronto.</p>
+						</div>
+						<div>
+							@components.Input(components.InputProps{Type: "date", Name: "date", Label: "Data", Required:true})
+							@components.Input(components.InputProps{Type: "text", Name: "teeth", Label: "Dentes operados", Required:true})
+							@components.Input(components.InputProps{Type: "text", Name: "proccedure", Label: "Procedimento realizado", Required:true})
+						</div>
+						<div class="modal-action flex flex-col gap-2 items-end">
+							@components.ErrorMessage("")
+							<div class="flex justify-between items-center w-full">
+								<button type="reset" class="btn btn-error">Limpar formulário</button>
+								<div class="flex gap-2">
+									<button onclick="createAppointmentModal.close()" type="button" class="btn">Cancelar</button>
+									<button class="btn btn-primary">Salvar</button>
+								</div>
+							</div>
+						</div>
+					</form>
+				</dialog>
+			</div>
+			<nav role="tablist" class="tabs tabs-lifted">
+				<a href={ templ.URL("/patient?id=" + props.ClientID) } role="tab" class="tab">Dados do paciente</a>
+				<a href={ templ.URL("/appointments?patientId=" + props.ClientID) } role="tab" class="tab tab-active">Consultas</a>
+			</nav>
+		</section>
+		<section>
+			@components.AppointmentsTable(props.Appointments, props.TotalCount, props.StartPage, props.EndPage, 1)
+		</section>
+
+		<script>
+			document.body.addEventListener("appointmentCreated", () => {
+				createAppointmentModal.close()
+				Toastify({
+					text: "Consulta registrada!",
+					duration: 3000,
+					newWindow: true,
+					close: true,
+					gravity: "top",
+					position: "right",
+				  }).showToast();
+			})
+		</script>
+	}
+}

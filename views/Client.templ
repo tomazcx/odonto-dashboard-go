@@ -7,46 +7,49 @@ import (
 	"github.com/tomazcx/odonto-dashboard-go/data/entities"
 )
 
-templ Client(clientData entities.Client){
+templ Client(clientData entities.Client) {
 	@layouts.DashboardLayout() {
 		<section class="flex flex-col pb-4 gap-6">
-			<div class="flex justify-between items-center">
-				<h1 class="text-2xl text-left font-medium">Ficha de paciente</h1>
-				@components.DeleteModal(components.DeleteModalProps{ID: clientData.ID, URL: "/patient/delete", Title: "Deseja deletar o paciente?", Description: "Se confirmar, os dados do paciente e suas consultas serão apagados permanentemente."}){
+			<div class="flex justify-between items-end">
+				<div class="flex flex-col gap-2">
+					<a href="/patients" class="link link-primary"><span class="text-xl">‹</span> Todos os pacientes</a>
+					<h1 class="text-2xl text-left font-medium">Ficha de paciente</h1>
+				</div>
+				@components.DeleteModal(components.DeleteModalProps{ID: clientData.ID, URL: "/patient/delete", Title: "Deseja deletar o paciente?", Description: "Se confirmar, os dados do paciente e suas consultas serão apagados permanentemente."}) {
 					<button class="btn btn-error">Deletar</button>
 				}
 			</div>
-			<nav role="tablist" class="tabs tabs-lifted flex">
-				<a role="tab" href="/appointments" class="tab tab-active whitespace-nowrap">Dados do paciente</a>
-				<a role="tab" class="tab w-full justify-start">Consultas</a>
+			<nav role="tablist" class="tabs tabs-lifted">
+				<a role="tab" class="tab tab-active">Dados do paciente</a>
+				<a href={ templ.URL("/appointments?patientId=" + clientData.ID) } role="tab" class="tab">Consultas</a>
 			</nav>
 		</section>
 		<section class="grid grid-cols-12 justify-between">
-			<form hx-put={"/patient/update?id=" + clientData.ID} hx-target="#formError" hx-swap="outerHTML" class="col-span-6">
-			@components.FormFieldset(components.FormFieldsetProps{Title: "Informações pessoais", UseTopTitle: true}) {
-				@components.Input(components.InputProps{Type: "text", Label: "Nome", Name: "name", ContainerStyle: "col-span-6", Required:true, Value: clientData.Name})
-				@components.Input(components.InputProps{Type: "number", Label: "Idade", Name: "age", ContainerStyle: "col-span-6", Required:true, Value: strconv.Itoa(clientData.Age)})
-				@components.Input(components.InputProps{Type: "text", Label: "Número de telefone", Name: "telephone", ContainerStyle: "col-span-6", Required: true, Value: clientData.Telephone})
-			}
-			@components.FormFieldset(components.FormFieldsetProps{Title: "Endereço", UseTopTitle: true}) {
-				@components.Input(components.InputProps{Type: "text", Label: "Cidade", Name: "city", ContainerStyle: "col-span-6", Required:true, Value: clientData.City})
-				@components.Input(components.InputProps{Type: "text", Label: "Rua e número", Name: "address", ContainerStyle: "col-span-6", Value: clientData.Address})
-				@components.Input(components.InputProps{Type: "text", Label: "Bairro", Name: "district", ContainerStyle: "col-span-6", Value: clientData.District})
-			}
-			@components.FormFieldset(components.FormFieldsetProps{Title: "Orçamento", UseTopTitle: true}) {
-				@components.Input(components.InputProps{Type: "text", Label: "Orçamento", Name: "budget", ContainerStyle: "col-span-6", Value: clientData.Budget})
-				@components.Textarea(components.TextareaProps{Label: "ObservaçÕes", Name: "budgetDescription", ContainerStyle: "col-span-12", Value: clientData.BudgetDescription})
-			}
-			@components.FormFieldset(components.FormFieldsetProps{Title: "Anamnese", UseTopTitle: true}) {
-				@components.Textarea(components.TextareaProps{Label: "Descrição", Name: "anamnese", ContainerStyle: "col-span-12", Value: clientData.Anamnese})
-			}
+			<form hx-put={ "/patient/update?id=" + clientData.ID } hx-target="#formError" hx-swap="outerHTML" class="col-span-6">
+				@components.FormFieldset(components.FormFieldsetProps{Title: "Informações pessoais", UseTopTitle: true}) {
+					@components.Input(components.InputProps{Type: "text", Label: "Nome", Name: "name", ContainerStyle: "col-span-6", Required:true, Value: clientData.Name})
+					@components.Input(components.InputProps{Type: "number", Label: "Idade", Name: "age", ContainerStyle: "col-span-6", Required:true, Value: strconv.Itoa(clientData.Age)})
+					@components.Input(components.InputProps{Type: "text", Label: "Número de telefone", Name: "telephone", ContainerStyle: "col-span-6", Required: true, Value: clientData.Telephone})
+				}
+				@components.FormFieldset(components.FormFieldsetProps{Title: "Endereço", UseTopTitle: true}) {
+					@components.Input(components.InputProps{Type: "text", Label: "Cidade", Name: "city", ContainerStyle: "col-span-6", Required:true, Value: clientData.City})
+					@components.Input(components.InputProps{Type: "text", Label: "Rua e número", Name: "address", ContainerStyle: "col-span-6", Value: clientData.Address})
+					@components.Input(components.InputProps{Type: "text", Label: "Bairro", Name: "district", ContainerStyle: "col-span-6", Value: clientData.District})
+				}
+				@components.FormFieldset(components.FormFieldsetProps{Title: "Orçamento", UseTopTitle: true}) {
+					@components.Input(components.InputProps{Type: "text", Label: "Orçamento", Name: "budget", ContainerStyle: "col-span-6", Value: clientData.Budget})
+					@components.Textarea(components.TextareaProps{Label: "ObservaçÕes", Name: "budgetDescription", ContainerStyle: "col-span-12", Value: clientData.BudgetDescription})
+				}
+				@components.FormFieldset(components.FormFieldsetProps{Title: "Anamnese", UseTopTitle: true}) {
+					@components.Textarea(components.TextareaProps{Label: "Descrição", Name: "anamnese", ContainerStyle: "col-span-12", Value: clientData.Anamnese})
+				}
 				<div class="flex items-end mt-4 flex-col">
 					@components.ErrorMessage("")
 					<button class="btn btn-primary">Salvar</button>
 				</div>
 			</form>
 			<div class="col-span-6 p-4 pr-0 flex justify-end items-start">
-				<img src="/public/assets/odontograma.webp" class="w-10/12 object-contain" />
+				<img src="/public/assets/odontograma.webp" class="w-10/12 object-contain"/>
 			</div>
 		</section>
 		<script>
@@ -61,6 +64,5 @@ templ Client(clientData entities.Client){
 				  }).showToast();
 			})
 		</script>
-
 	}
 }

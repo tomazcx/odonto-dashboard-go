@@ -9,18 +9,18 @@ type DeleteModalProps struct {
 
 templ DeleteModal(props DeleteModalProps) {
 	<div onclick="deleteModal.showModal()">
-		{children...}
+		{ children... }
 	</div>
 	<dialog id="deleteModal" class="modal rounded-lg">
-	  <div class="modal-box">
-		<h3 class="font-bold text-lg">{props.Title}</h3>
-		<p class="py-4">{props.Description}</p>
-		<div class="modal-action">
-		  <form method="dialog">
-			<button class="btn">Cancelar</button>
-			<button hx-delete={props.URL + "?id=" + props.ID} class="btn btn-error">Deletar</button>
-		  </form>
+		<div class="modal-box">
+			<h3 class="font-bold text-lg">{ props.Title }</h3>
+			<p class="py-4">{ props.Description }</p>
+			<div class="modal-action">
+				<form method="dialog" class="flex gap-2">
+					<button class="btn">Cancelar</button>
+					<button hx-swap="none" hx-delete={ props.URL + "?id=" + props.ID } class="btn btn-error">Deletar</button>
+				</form>
+			</div>
 		</div>
-	  </div>
 	</dialog>
 }

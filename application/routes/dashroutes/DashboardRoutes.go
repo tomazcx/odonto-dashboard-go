@@ -1,4 +1,4 @@
-package routes
+package dashroutes
 
 import (
 	"net/http"

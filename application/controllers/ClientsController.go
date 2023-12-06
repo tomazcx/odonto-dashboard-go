@@ -103,7 +103,7 @@ func (c ClientsController) ChangePage(w http.ResponseWriter, r *http.Request) {
 	pageInt, err := strconv.Atoi(page)
 
 	if err != nil {
-		http.Error(w, "Página inválida.", http.StatusUnprocessableEntity)
+		http.Error(w, "Erro: Página inválida.", http.StatusUnprocessableEntity)
 		return
 	}
 
