@@ -8,10 +8,10 @@ import (
 
 type AppointmentsViewProps struct {
 	Appointments []entities.Appointment
-	ClientID	string
-	StartPage  int
-	EndPage    int
-	TotalCount int
+	ClientID     string
+	StartPage    int
+	EndPage      int
+	TotalCount   int
 }
 
 templ Appointments(props AppointmentsViewProps) {
@@ -23,7 +23,6 @@ templ Appointments(props AppointmentsViewProps) {
 					<h1 class="text-2xl text-left font-medium">Ficha de paciente</h1>
 				</div>
 				<button class="btn btn-primary" onclick="createAppointmentModal.showModal()">Nova +</button>
-
 				//Create appointment modal
 				<dialog id="createAppointmentModal" class="modal">
 					<form hx-post="/appointment/create" hx-target="#formError" hx-swap="outerHTML" class="modal-box w-11/12 max-w-xl flex flex-col gap-4">
@@ -57,7 +56,6 @@ templ Appointments(props AppointmentsViewProps) {
 		<section>
 			@components.AppointmentsTable(props.Appointments, props.TotalCount, props.StartPage, props.EndPage, 1)
 		</section>
-
 		<script>
 			document.body.addEventListener("appointmentCreated", () => {
 				createAppointmentModal.close()
