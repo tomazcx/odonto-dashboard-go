@@ -4,7 +4,7 @@ COPY . .
 RUN npm install
 RUN npm run build
 
-FROM golang:1.21.2 as go_builder
+FROM golang:1.21 as go_builder
 WORKDIR /usr/local/app
 COPY . .
 RUN go install github.com/a-h/templ/cmd/templ@latest
