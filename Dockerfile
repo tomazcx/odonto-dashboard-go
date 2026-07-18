@@ -7,7 +7,7 @@ RUN npm run build
 FROM golang:1.21 as go_builder
 WORKDIR /usr/local/app
 COPY . .
-RUN go install github.com/a-h/templ/cmd/templ@latest
+RUN go install github.com/a-h/templ/cmd/templ@v0.2.501
 COPY --from=node_builder /usr/local/node_app/public/dist/ /usr/local/app/public/dist
 ENTRYPOINT [ ".docker/entrypoint.sh" ]
 
